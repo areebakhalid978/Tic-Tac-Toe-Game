@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Player Names</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="game-title">Enter Player Names</h1>
+        
+        <div class="names-form">
+            <div class="input-group">
+                <label for="player1">Player 1 Name (❌):</label>
+                <input type="text" id="player1" placeholder="Enter Player 1 name" value="Player 1">
+            </div>
+            
+            <div class="input-group">
+                <label for="player2">Player 2 Name (⭕):</label>
+                <input type="text" id="player2" placeholder="Enter Player 2 name" value="Player 2">
+            </div>
+            
+            <button class="start-button" onclick="startGame()">Start Game 🎮</button>
+        </div>
+        
+        <a href="/" class="back-link">← Back to Menu</a>
+    </div>
+    
+    <script>
+        function startGame() {
+            const p1 = document.getElementById('player1').value || 'Player 1';
+            const p2 = document.getElementById('player2').value || 'Player 2';
+            window.location.href = `/set_names/${encodeURIComponent(p1)}/${encodeURIComponent(p2)}`;
+        }
+        
+        document.getElementById('player1').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') startGame();
+        });
+        
+        document.getElementById('player2').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') startGame();
+        });
+    </script>
+</body>
+</html>

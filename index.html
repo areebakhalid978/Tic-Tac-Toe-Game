@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+    html { scroll-behavior: auto; }
+    </style>
+
+</head>
+<body onload="window.scrollTo(0, localStorage.getItem('scrollY') || 0)">
+
+    <div class="container">
+        {% if not game_over %}
+            <h1 class="game-title">Tic-Tac-Toe</h1>
+            
+            <div class="player-info">
+                <div class="player-card {% if current_turn == 'p1' %}active{% endif %}">
+                    <span class="player-symbol">{{ p1_symbol }}</span>
+                    <span class="player-name">{{ p1_name }}</span>
+                </div>
+                <div class="vs">VS</div>
+                <div class="player-card {% if current_turn == 'p2' %}active{% endif %}">
+                    <span class="player-symbol">{{ p2_symbol }}</span>
+                    <span class="player-name">{{ p2_name }}</span>
+                </div>
+            </div>
+            
+            <div class="turn-indicator">
+                {% if mode == 'ai' %}
+                    Your Turn!
+                {% else %}
+                    {% if current_turn == 'p1' %}
+                        {{ p1_name }}'s Turn
+                    {% else %}
+                        {{ p2_name }}'s Turn
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endif %}
+        
+        {% if game_over %}
+            <div class="winner-announcement">
+                {% if winner != 'Draw' %}
+                    <div class="celebration">🎊 🎉 🎊</div>
+                    <div class="trophy">🏆</div>
+                    <h1 class="winner-text">{{ winner }} Wins!</h1>
+                    <div class="celebration">🎊 🎉 🎊</div>
+                {% else %}
+                    <h1 class="draw-text">It's a Draw! 🤝</h1>
+                {% endif %}
+            </div>
+        {% endif %}
+        
+        <div class="my-board">
+            {% for i in range((board) | length) %}
+            <div class="board-row">
+                {% for j in range((board)[i] | length) %}
+                <a href="/mark/{{i}}/{{j}}" 
+                class="cell-link {% if game_over %}disabled{% endif %}"
+                onclick="localStorage.setItem('scrollY', window.scrollY)">
+                       <button class="cell {% if board[i][j] != '' %}filled{% endif %}">
+                           {{ board[i][j] if board[i][j] != '' else '' }}
+                       </button>
+                   </a>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="game-controls">
+            {% if game_over %}
+                <a href="/reset"><button class="control-button reset-btn">🔄 Play Again</button></a>
+                <a href="/"><button class="control-button menu-btn">🏠 Main Menu</button></a>
+            {% else %}
+                <a href="/reset"><button class="control-button reset-btn">🔄 Reset</button></a>
+                <a href="/"><button class="control-button menu-btn">🏠 Menu</button></a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
